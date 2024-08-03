@@ -7,7 +7,7 @@ Mkdocs plugin that converts gitbook markdown syntax to mkdocs support markdown
 ## Setup
 
 1. ```
-   pip3 install git+https://github.com/pledra/gitbook2mkdocs
+   pip3 install git+https://github.com/cslstr/gitbook2mkdocs
    ```
 
 2. Setup gitbook's `Synchronize with Git` option to store the markdown files in your git repository 
@@ -25,4 +25,13 @@ Mkdocs plugin that converts gitbook markdown syntax to mkdocs support markdown
 ```
 plugins:
   - gitbook2mkdocs
+```
+
+You'll also probably want to load admonitions:
+
+```
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
 ```
