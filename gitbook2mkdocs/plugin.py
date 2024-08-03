@@ -74,13 +74,15 @@ class Gitbook2Mkdocs(BasePlugin):
     def convert_hints(self, content):
         def indent_text(match):
             hint_style = match.group(1)
-            inner_text = match.group(2).rstrip()
+            title = match.group(2).strip()
+            inner_text = match.group(3).rstrip()
             indented_text = inner_text.replace("\n", "\n    ")
-            return f"!!! {hint_style}\n    {indented_text}\n"
+            return f'!!! {hint_style} "{title}"\n    {indented_text}\n'
 
-        pattern = r'{% hint style="([a-zA-Z]+)" %}\s*(.*?)\s*{% endhint %}'
+        pattern = r'{% hint style="([a-zA-Z]+)" %}\s*(.*?)\s*\n(.*?)\s*{% endhint %}'
         return re.sub(pattern, indent_text, content, flags=re.DOTALL)
 
+    
     # Function to change gitbooks tab format into mkdocs tab format
     def convert_tabs(self, content):
         # Replace {% tabs %} with an empty string (not needed in the target format)
