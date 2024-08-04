@@ -66,10 +66,29 @@ class Gitbook2Mkdocs(BasePlugin):
             flags=re.DOTALL,
         )
 
+        content = self.convert_code(content)
         content = self.convert_hints(content)
         content = self.convert_tabs(content)
         return content
 
+    
+    # Replace gitbook code blocks with titles
+    # {% code title="attacker@local" %}
+    # ```py
+    # ...
+    # ```
+    # {% endcode %}
+    def convert_code(self, content):
+        def indent_text(match):
+            titletext = match.group(1)
+            blockstartlang = match.group(2).strip()
+            inner_text = match.group(3).rstrip()
+            return f'{blockstartlang} {titletext}\n{inner_text}\n'
+
+        pattern = r'{% code (title="[a-zA-Z]+") %}\n(```.*?)\n(.*?)\s*{% endcode %}'
+        return re.sub(pattern, indent_text, content, flags=re.DOTALL)
+
+        
     # Replace gitbook hint blocks with admonition
     def convert_hints(self, content):
         def indent_text(match):
