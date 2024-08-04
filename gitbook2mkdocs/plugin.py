@@ -85,7 +85,7 @@ class Gitbook2Mkdocs(BasePlugin):
             inner_text = match.group(3).rstrip()
             return f'{blockstartlang} {titletext}\n{inner_text}\n'
 
-        pattern = r'{% code (title="[a-zA-Z]+") %}\n(```.*?)\n(.*?)\s*{% endcode %}'
+        pattern = r'{% code (title="[^"]+") %}\n(```.*?)\n(.*?)\s*{% endcode %}'
         return re.sub(pattern, indent_text, content, flags=re.DOTALL)
 
         
